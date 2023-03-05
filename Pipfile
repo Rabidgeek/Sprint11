@@ -5,6 +5,9 @@ name = "pypi"
 
 [packages]
 flask = "*"
+flask-sqlalchemy = "*"
+jinja2 = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
