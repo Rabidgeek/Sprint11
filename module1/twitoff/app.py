@@ -44,6 +44,14 @@ def create_app():
         DB.session.add(tweet1)
         tweet2 = Tweet(id=2, text='42, the answer to life, the universe, everything.', user=dave)
         DB.session.add(tweet2)
+        tweet3 = Tweet(id=3, text='snoogans, bitches', user=jesse)
+        DB.session.add(tweet3)
+        tweet4 = Tweet(id=4, text='cogito, ergo sum', user=dave)
+        DB.session.add(tweet4)
+        tweet5 = Tweet(id=5, text='memento mori', user=jesse)
+        DB.session.add(tweet5)
+        tweet6 = Tweet(id=6, text='tu es pinche pendejo... ', user=dave)
+        DB.session.add(tweet6)
 
         DB.session.commit()
 
