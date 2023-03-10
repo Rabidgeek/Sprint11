@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from .models import DB, User, Tweet
+from .twitter import add_or_update_user
 
 def create_app():
     app = Flask(__name__)
@@ -18,10 +19,6 @@ def create_app():
         users = User.query.all()
         return render_template('base.html', title="Home", users=users)
 
-    @app.route('/bananas')
-    def bananas():
-        return render_template('base.html', title='Bananas, man...')
-    
     @app.route('/reset')
     def reset():
         # Drop all database tables
@@ -29,32 +26,26 @@ def create_app():
         # Recreate all database tables according to the
         # indicated schema in models.py
         DB.create_all()
-        return "Database has been reset, dude..."
+        return render_template('base.html', title='Reset teh DB, d00d')
     
     @app.route('/populate')
     def populate():
         # Create 2 fake users
-        jesse = User(id=1, username='Jesse')
-        DB.session.add(jesse)
-        dave = User(id=2, username='Dave')
-        DB.session.add(dave)
+        add_or_update_user('austen')
+        add_or_update_user('nasa')
+        add_or_update_user('jesseragsdale')
 
-        # Create 2 fake tweets
-        tweet1 = Tweet(id=1, text='fi fo fe dum I am hungry and gonna eat you', user=jesse)
-        DB.session.add(tweet1)
-        tweet2 = Tweet(id=2, text='42, the answer to life, the universe, everything.', user=dave)
-        DB.session.add(tweet2)
-        tweet3 = Tweet(id=3, text='snoogans, bitches', user=jesse)
-        DB.session.add(tweet3)
-        tweet4 = Tweet(id=4, text='cogito, ergo sum', user=dave)
-        DB.session.add(tweet4)
-        tweet5 = Tweet(id=5, text='memento mori', user=jesse)
-        DB.session.add(tweet5)
-        tweet6 = Tweet(id=6, text='tu es pinche pendejo... ', user=dave)
-        DB.session.add(tweet6)
-
-        DB.session.commit()
-
-        return "Database has been populated, bruh"
+        return render_template('base.html', title='DB has been populated, bruh')
+    
+    @app.route('/update')
+    def update():
+        # get a list of usernames of all users
+        users = Users.query.all()
+        usernames = []
+        #for user in users:
+        #    usernames.append(user.username)
+        # list comprehension version
+        for username in [user.username for user in users]:
+            add_or_update_user(username)
 
     return app
