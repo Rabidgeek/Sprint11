@@ -36,6 +36,13 @@ def add_or_update_user(username):
                                     tweet_mode='extended',
                                     since_id=db_user.newest_tweet_id)
         
+        # check to see if the newest tweet in the DB is equal to the 
+        # newest tweet from the Twitter API, if they're not equal then that 
+        # means that the user has posted new tweets that we should add to 
+        # our DB. 
+        if tweets:
+            db_user.newest_tweet_id = tweets[0].id
+        
         # Add all of the individual's tweets to the database
         for tweet in tweets:
             tweet_vector = vectorize_tweet(tweet.full_text)
@@ -50,6 +57,14 @@ def add_or_update_user(username):
     else:
         # Save the changes to the DB
         DB.session.commit()
+
+def update_all_users():
+    usernames = []
+    Users = User.query.all()
+    for user in Users:
+        usernames.append(user.username)
+    
+    return usernames
 
 nlp = spacy.load('my_model/')
 # We have the same tool we used in the flask shell here in our file

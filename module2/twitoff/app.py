@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from .models import DB, User, Tweet
-from .twitter import add_or_update_user
+from .twitter import add_or_update_user, update_all_users
 
 def create_app():
     app = Flask(__name__)
@@ -40,12 +40,15 @@ def create_app():
     @app.route('/update')
     def update():
         # get a list of usernames of all users
-        users = Users.query.all()
+        users = User.query.all()
         usernames = []
         #for user in users:
         #    usernames.append(user.username)
         # list comprehension version
         for username in [user.username for user in users]:
             add_or_update_user(username)
+        
+        return render_template('base.html', title='DB has been populated, bruh')
+
 
     return app
