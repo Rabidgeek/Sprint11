@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 DB = SQLAlchemy()
 
+
 class User(DB.Model):
     # ID Col
     id = DB.Column(DB.BigInteger, primary_key=True, nullable=False)
@@ -17,6 +18,7 @@ class User(DB.Model):
     def __repr__(self):
         return f"User: {self.username}"
 
+
 class Tweet(DB.Model):
     # ID col
     id = DB.Column(DB.BigInteger, primary_key=True, nullable=False)
@@ -25,11 +27,11 @@ class Tweet(DB.Model):
     # store our word embeddings "vectorization"
     vect = DB.Column(DB.PickleType, nullable=False)
     # user_id col - foreign/secondary key)
-    user_id = DB.Column(DB.BigInteger, 
+    user_id = DB.Column(DB.BigInteger,
                         DB.ForeignKey('user.id'),
                         nullable=False)
     # user column creates a two-way link between an user object and a tweet
-    user = DB.relationship('User', 
+    user = DB.relationship('User',
                            backref=DB.backref('tweets', lazy=True))
 
     def __repr__(self):

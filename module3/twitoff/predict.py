@@ -3,15 +3,16 @@ import numpy as np
 from .models import User
 from .twitter import vectorize_tweet
 
+
 def predict_user(user0_username, user1_username, hypo_tweet_text):
     # grab the users from DB
-    user0 = User.query.filter(User.username==user0_username)
-    user1 = User.query.filter(User.username==user1_username)
+    user0 = User.query.filter(User.username == user0_username)
+    user1 = User.query.filter(User.username == user1_username)
 
     # get the word embeddings from each user
     user0_vects = np.array([tweet.vect for tweet in user0.tweets])
     user1_vects = np.array([tweet.vect for tweet in user1.tweets])
-    
+
     # vertically stack the 2 2-d numpy arrays to make our X Matrix
     X_train = np.vstack([user0_vects, user1_vects])
 
